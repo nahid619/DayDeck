@@ -1,0 +1,139 @@
+/* components/shell/TopNav.module.css */
+
+.header {
+  flex-shrink: 0;
+  z-index: 50;
+  position: relative;
+}
+
+/* Loading bar (#26) */
+.loadingBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--blue), var(--purple));
+  background-size: 200% 100%;
+  animation: loadingSlide 1.2s ease-in-out infinite;
+  z-index: 100;
+}
+@keyframes loadingSlide {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Row 1 ── */
+.row1 {
+  background: var(--row1);
+  border-bottom: 1px solid var(--border2);
+  height: var(--nav1-h);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 14px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.logoDay  { font-family: var(--logo-font); font-size: 24px; color: var(--accent);  letter-spacing: 2px; }
+.logoDot  { width: 5px; height: 5px; border-radius: 50%; background: var(--yellow); margin: 0 2px 5px; flex-shrink: 0; }
+.logoDeck { font-family: var(--logo-font); font-size: 24px; color: var(--accent2); letter-spacing: 2px; }
+
+/* Right area */
+.r1Right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surf3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  font-family: var(--mono);
+}
+.badgeGreen {
+  color: var(--accent);
+  background: rgba(0,212,170,0.08);
+  border-color: rgba(0,212,170,0.2);
+}
+.themeBtn {
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 4px 12px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: var(--font);
+}
+.themeBtn:hover { color: var(--text); border-color: var(--accent); }
+
+/* ── Row 2 ── */
+.row2 {
+  background: var(--row2);
+  border-bottom: 1px solid var(--border2);
+  height: var(--nav2-h);
+  display: flex;
+  align-items: stretch;
+}
+.arr {
+  width: 32px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, opacity 0.2s;
+  font-family: var(--font);
+}
+.arrRight { border-right: none; border-left: 1px solid var(--border); }
+.arr:hover { background: var(--surf3); color: var(--text); }
+.arrHidden { opacity: 0; pointer-events: none; }
+
+.tabsViewport {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.tabsTrack {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+}
+.tabBtn {
+  padding: 0 16px;
+  height: 100%;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  font-family: var(--font);
+}
+.tabBtn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.tabActive    { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
+.tabPending   { opacity: 0.7; }

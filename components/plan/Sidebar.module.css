@@ -1,0 +1,175 @@
+/* components/plan/Sidebar.module.css */
+
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surf);
+  border-right: 1px solid var(--border2);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search row */
+.searchRow {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.searchIcon {
+  color: var(--text-secondary);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 12px;
+  min-width: 0;
+}
+.searchInput::placeholder { color: var(--muted2); }
+.clearBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  padding: 0 2px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.clearBtn:hover { color: var(--text); }
+
+.planLabel {
+  padding: 10px 14px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-family: var(--mono);
+}
+
+/* Search results */
+.searchResults { flex: 1; }
+.noResults {
+  padding: 20px 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Phase group */
+.phaseGroup { margin-bottom: 2px; }
+.phaseHdr {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 7px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s;
+}
+.phaseHdr:hover { color: var(--text); }
+.phaseArrow {
+  font-size: 8px;
+  color: var(--text-secondary);
+  transition: transform 0.2s;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.phaseArrow.open { transform: rotate(90deg); }
+.phaseLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.phaseCount {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  flex-shrink: 0;
+}
+
+/* Card links */
+.phaseCards { padding-bottom: 4px; }
+.cardLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 14px 6px 18px;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+.cardLink:hover {
+  background: var(--surf2);
+  color: var(--text);
+}
+.cardLinkActive {
+  background: var(--surf2) !important;
+  border-left-color: var(--accent) !important;
+  color: var(--text) !important;
+}
+.cardNum {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  min-width: 18px;
+  flex-shrink: 0;
+}
+.cardLabel {
+  font-size: 12px;
+  font-weight: 500;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Effort dots */
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dotLight  { background: var(--accent); }
+.dotNormal { background: var(--yellow); }
+.dotHeavy  { background: var(--accent2); }
+
+/* Story part badge */
+.partBadge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--muted2);
+  background: var(--surf3);
+  border-radius: 3px;
+  padding: 1px 4px;
+  flex-shrink: 0;
+}

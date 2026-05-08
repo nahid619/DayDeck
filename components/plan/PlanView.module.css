@@ -1,0 +1,7 @@
+/* components/plan/PlanView.module.css */
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}

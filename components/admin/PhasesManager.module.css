@@ -1,0 +1,79 @@
+.wrap { display:flex;flex-direction:column;height:100%;overflow:hidden; }
+.panelHdr {
+  display:flex;align-items:center;gap:8px;padding:12px 14px;
+  border-bottom:1px solid var(--border2);flex-shrink:0;
+}
+.hdrLeft { display:flex;align-items:center;gap:6px;flex:1;min-width:0; }
+.planEmoji { font-size:15px;flex-shrink:0; }
+.panelTitle { font-size:12px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.addBtn {
+  padding:5px 12px;background:var(--accent);border:none;
+  border-radius:var(--radius-sm);color:#0C0E1A;font-size:11px;font-weight:700;
+  font-family:var(--font);transition:opacity .15s;white-space:nowrap;flex-shrink:0;
+}
+.addBtn:hover { opacity:.88; }
+.subHint { padding:5px 14px;font-size:10px;color:var(--muted2);font-family:var(--mono);border-bottom:1px solid var(--border); }
+.list { flex:1;overflow-y:auto;padding:4px 0; }
+.loading,.empty { padding:24px 16px;text-align:center;font-size:12px;color:var(--muted); }
+.phaseItem {
+  display:flex;align-items:center;gap:8px;padding:9px 12px;
+  cursor:pointer;border-left:2px solid transparent;
+  transition:background .1s,border-color .1s;
+}
+.phaseItem:hover { background:var(--surf2); }
+.phaseActive { background:var(--surf2) !important;border-left-color:var(--accent) !important; }
+.phaseLeft { display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0; }
+.phaseId {
+  font-family:var(--mono);font-size:10px;color:var(--accent);
+  background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.15);
+  border-radius:4px;padding:2px 6px;flex-shrink:0;margin-top:1px;
+}
+.phaseInfo { display:flex;flex-direction:column;gap:1px;min-width:0; }
+.phaseLabel { font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.phaseTitle { font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.phaseActions { display:flex;gap:4px;flex-shrink:0; }
+.iconBtn {
+  background:none;border:1px solid transparent;border-radius:4px;
+  color:var(--muted);font-size:13px;padding:2px 6px;transition:all .15s;
+}
+.iconBtn:hover { background:var(--surf3);color:var(--text);border-color:var(--border2); }
+.iconBtnDanger:hover { background:rgba(255,107,107,.1);color:var(--accent2);border-color:rgba(255,107,107,.2); }
+
+/* Form */
+.form { display:flex;flex-direction:column;gap:14px; }
+.fieldRow { display:flex;flex-direction:column;gap:6px; }
+.fieldLabel { font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-family:var(--mono); }
+.fieldHint { font-size:10px;color:var(--muted2);text-transform:none;letter-spacing:0; }
+.input {
+  background:var(--surf2);border:1px solid var(--border2);border-radius:var(--radius);
+  padding:8px 12px;color:var(--text);font-size:13px;outline:none;
+  transition:border-color .15s;width:100%;
+}
+.input:focus { border-color:var(--accent); }
+.deleteWarning { font-size:13px;color:var(--text);line-height:1.7; }
+.deleteWarning strong { color:var(--accent2); }
+
+/* Hover-only actions (#13) */
+.phaseActions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.phaseItem:hover .phaseActions,
+.phaseItem:focus-within .phaseActions {
+  opacity: 1;
+}
+
+/* Drag handle */
+.dragHandle {
+  color: var(--muted2);
+  font-size: 12px;
+  cursor: grab;
+  padding: 0 4px 0 0;
+  flex-shrink: 0;
+  user-select: none;
+}
+.dragHandle:active { cursor: grabbing; }
+.dragOver { outline: 2px dashed var(--accent); outline-offset: -2px; }
