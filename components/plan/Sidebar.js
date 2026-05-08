@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { CARD_TYPES }                  from "@/lib/cardSchema";
+import { getPhaseColor }               from "./DetailPanel";
 import styles                          from "./Sidebar.module.css";
 
 export default function Sidebar({
@@ -84,17 +85,27 @@ export default function Sidebar({
           )}
         </div>
       ) : (
-        phases.map(phase => {
+        phases.map((phase, phaseIdx) => {
           const phaseCards = (cardsByPhase[phase.phaseId] || [])
             .sort((a, b) => (a.order || 0) - (b.order || 0));
           const isOpen = openPhases[phase.phaseId] !== false;
+          const pc     = getPhaseColor(phaseIdx);
 
           return (
             <div key={phase.phaseId} className={styles.phaseGroup}>
-              <button className={styles.phaseHdr} onClick={() => togglePhase(phase.phaseId)}>
+              <button
+                className={styles.phaseHdr}
+                onClick={() => togglePhase(phase.phaseId)}
+                style={{ borderLeftColor: pc.accent }}
+              >
                 <span className={`${styles.phaseArrow} ${isOpen ? styles.open : ""}`}>▶</span>
-                <span className={styles.phaseLabel}>{phase.label}</span>
-                <span className={styles.phaseCount}>{phaseCards.length}</span>
+                <span className={styles.phaseLabel} style={{ color: pc.text }}>{phase.label}</span>
+                <span
+                  className={styles.phaseCount}
+                  style={{ background: pc.bg, border: `1px solid ${pc.border}`, color: pc.text }}
+                >
+                  {phaseCards.length}
+                </span>
               </button>
 
               {isOpen && (
@@ -106,6 +117,7 @@ export default function Sidebar({
                       cardType={plan.cardType}
                       isActive={selectedCard?._id === card._id}
                       activeRef={selectedCard?._id === card._id ? activeRef : null}
+                      activeColor={pc.accent}
                       onClick={() => onSelect(card)}
                     />
                   ))}
@@ -119,7 +131,7 @@ export default function Sidebar({
   );
 }
 
-function CardLink({ card, cardType, isActive, activeRef, onClick }) {
+function CardLink({ card, cardType, isActive, activeRef, activeColor, onClick }) {
   const effortDotClass = {
     light:  styles.dotLight,
     normal: styles.dotNormal,
@@ -131,7 +143,7 @@ function CardLink({ card, cardType, isActive, activeRef, onClick }) {
       ref={isActive ? activeRef : null}
       className={`${styles.cardLink} ${isActive ? styles.cardLinkActive : ""}`}
       onClick={onClick}
-      style={isActive && card.color ? { borderLeftColor: card.color } : {}}
+      style={isActive ? { borderLeftColor: activeColor || "var(--accent)" } : {}}
     >
       <span className={styles.cardNum}>
         {cardType === CARD_TYPES.DAY_PLAN  && `${card.day || card.order}`}

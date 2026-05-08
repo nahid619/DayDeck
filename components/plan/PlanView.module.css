@@ -1,6 +1,7 @@
 /* components/plan/PlanView.module.css */
 .body {
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr var(--detail-w);
   flex: 1;
   overflow: hidden;
   min-height: 0;

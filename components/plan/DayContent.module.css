@@ -22,7 +22,7 @@
   gap: 12px;
 }
 .contentTitle {
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 700;
   flex: 1;
   overflow: hidden;
@@ -69,9 +69,8 @@
 
 /* Content body */
 .contentBody {
-  padding: 20px 24px 40px;
-  max-width: 780px;
-  margin: 0 auto;
+  padding: 24px 28px 48px;
+  max-width: 900px;
 }
 
 /* Day badge */
@@ -103,11 +102,11 @@
 
 /* Day title */
 .dayTitle {
-  font-size: 22px;
+  font-size: var(--text-2xl);
   font-weight: 800;
   color: var(--text);
   line-height: 1.25;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 /* Effort badge */
@@ -157,13 +156,13 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  padding: 7px 12px;
+  padding: 8px 14px;
   background: var(--surf2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-size: 13px;
+  font-size: var(--text-base);
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 .topicItem::before {
   content: "›";
@@ -180,8 +179,8 @@
   border: 1px solid var(--border);
   border-left: 3px solid var(--blue);
   border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 12px 16px;
-  font-size: 13px;
+  padding: 14px 18px;
+  font-size: var(--text-base);
   color: var(--text);
   line-height: 1.8;
 }
@@ -192,8 +191,8 @@
   border: 1px solid var(--border);
   border-left: 3px solid var(--purple);
   border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 12px 16px;
-  font-size: 13px;
+  padding: 14px 18px;
+  font-size: var(--text-base);
   color: var(--text);
   line-height: 1.8;
   font-style: italic;
@@ -205,11 +204,11 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 7px 12px;
+  padding: 8px 14px;
   background: var(--surf2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-size: 13px;
+  font-size: var(--text-base);
   color: var(--text);
 }
 .acNum {
@@ -277,11 +276,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
+  padding: 9px 14px;
   background: var(--surf2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-size: 13px;
+  font-size: var(--text-base);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
 }

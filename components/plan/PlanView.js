@@ -5,9 +5,10 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter, useSearchParams }            from "next/navigation";
 import { CARD_TYPES }                            from "@/lib/cardSchema";
-import Sidebar    from "./Sidebar";
-import DayContent from "./DayContent";
-import styles     from "./PlanView.module.css";
+import Sidebar      from "./Sidebar";
+import DayContent   from "./DayContent";
+import DetailPanel  from "./DetailPanel";
+import styles       from "./PlanView.module.css";
 
 export default function PlanView({ plan, phases, cards, initialCardId }) {
   const router       = useRouter();
@@ -94,6 +95,12 @@ export default function PlanView({ plan, phases, cards, initialCardId }) {
         onNavigate={navigate}
         hasPrev={selectedIdx > 0}
         hasNext={selectedIdx >= 0 && selectedIdx < displayList.length - 1}
+      />
+      <DetailPanel
+        plan={plan}
+        phases={phases}
+        cards={cards}
+        selectedCard={selectedCard}
       />
     </div>
   );

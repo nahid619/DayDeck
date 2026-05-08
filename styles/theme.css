@@ -1,0 +1,199 @@
+/* ═══════════════════════════════════════════════════════════════
+   styles/theme.css  —  DayDeck Global Design Tokens
+   Single source of truth. Change here → whole app updates.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Dark Mode (default) ────────────────────────────────────── */
+:root {
+  /* Backgrounds — Data Structures deep-dark palette */
+  --bg:    #0e1117;
+  --row1:  #0b0f1a;
+  --row2:  #111827;
+  --surf:  #161b27;
+  --surf2: #1c2333;
+  --surf3: #252f42;
+
+  /* Borders */
+  --border:  rgba(255, 255, 255, 0.07);
+  --border2: rgba(255, 255, 255, 0.14);
+
+  /* Text — WCAG AA compliant */
+  --text:           #e2e8f0;
+  --text-secondary: #9BA3C8;
+  --muted:          #9BA3C8;
+  --muted2:         #6B73A8;
+
+  /* Brand accent palette */
+  --accent:  #00D4AA;
+  --accent2: #FF6B6B;
+  --yellow:  #fbbf24;
+  --blue:    #3b82f6;
+  --purple:  #a78bfa;
+  --cyan:    #22d3ee;
+  --green:   #34d399;
+  --orange:  #fb923c;
+  --pink:    #f472b6;
+
+  /* Typography */
+  --font:      'Outfit', sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+  --logo-font: 'Bebas Neue', cursive;
+
+  /* Font sizes — increased for FHD readability */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   17px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  28px;
+  --text-3xl:  34px;
+
+  /* Layout dimensions */
+  --nav1-h:   48px;
+  --nav2-h:   40px;
+  --sidebar-w: 280px;
+  --detail-w:  340px;
+  --radius:    8px;
+  --radius-sm: 5px;
+  --radius-lg: 12px;
+
+  /* Phase color system — 8 colors, cycles for large plans */
+  /* Phase 1 — Blue */
+  --p1-accent: #3b82f6;
+  --p1-bg:     rgba(59, 130, 246, 0.12);
+  --p1-border: rgba(59, 130, 246, 0.30);
+  --p1-text:   #93c5fd;
+
+  /* Phase 2 — Green */
+  --p2-accent: #10b981;
+  --p2-bg:     rgba(16, 185, 129, 0.12);
+  --p2-border: rgba(16, 185, 129, 0.30);
+  --p2-text:   #6ee7b7;
+
+  /* Phase 3 — Amber */
+  --p3-accent: #f59e0b;
+  --p3-bg:     rgba(245, 158, 11, 0.12);
+  --p3-border: rgba(245, 158, 11, 0.30);
+  --p3-text:   #fcd34d;
+
+  /* Phase 4 — Pink */
+  --p4-accent: #ec4899;
+  --p4-bg:     rgba(236, 72, 153, 0.12);
+  --p4-border: rgba(236, 72, 153, 0.30);
+  --p4-text:   #f9a8d4;
+
+  /* Phase 5 — Purple */
+  --p5-accent: #a78bfa;
+  --p5-bg:     rgba(167, 139, 250, 0.12);
+  --p5-border: rgba(167, 139, 250, 0.30);
+  --p5-text:   #c4b5fd;
+
+  /* Phase 6 — Cyan */
+  --p6-accent: #22d3ee;
+  --p6-bg:     rgba(34, 211, 238, 0.12);
+  --p6-border: rgba(34, 211, 238, 0.30);
+  --p6-text:   #a5f3fc;
+
+  /* Phase 7 — Orange */
+  --p7-accent: #fb923c;
+  --p7-bg:     rgba(251, 146, 60, 0.12);
+  --p7-border: rgba(251, 146, 60, 0.30);
+  --p7-text:   #fdba74;
+
+  /* Phase 8 — Teal (accent) */
+  --p8-accent: #34d399;
+  --p8-bg:     rgba(52, 211, 153, 0.12);
+  --p8-border: rgba(52, 211, 153, 0.30);
+  --p8-text:   #a7f3d0;
+
+  /* Effort colors */
+  --effort-light-bg:    rgba(0, 212, 170, 0.10);
+  --effort-light-text:  #00D4AA;
+  --effort-normal-bg:   rgba(251, 191, 36, 0.10);
+  --effort-normal-text: #fbbf24;
+  --effort-heavy-bg:    rgba(255, 107, 107, 0.10);
+  --effort-heavy-text:  #FF6B6B;
+
+  /* Resource badge colors */
+  --res-video-bg:    rgba(220, 38, 38, 0.12);
+  --res-video-text:  #fca5a5;
+  --res-docs-bg:     rgba(59, 130, 246, 0.12);
+  --res-docs-text:   #93c5fd;
+  --res-tool-bg:     rgba(16, 185, 129, 0.10);
+  --res-tool-text:   #6ee7b7;
+  --res-trail-bg:    rgba(245, 158, 11, 0.10);
+  --res-trail-text:  #fcd34d;
+}
+
+/* ── Light Mode ─────────────────────────────────────────────── */
+[data-theme="light"] {
+  /* Backgrounds — warm paper palette from AI Fundamentals */
+  --bg:    #f8f7f4;
+  --row1:  #f5f0e8;
+  --row2:  #faf7f2;
+  --surf:  #ffffff;
+  --surf2: #f0ede8;
+  --surf3: #e5e0d8;
+
+  /* Borders */
+  --border:  rgba(0, 0, 0, 0.08);
+  --border2: rgba(0, 0, 0, 0.15);
+
+  /* Text — dark ink tones */
+  --text:           #1a1612;
+  --text-secondary: #4a4540;
+  --muted:          #4a4540;
+  --muted2:         #9a9088;
+
+  /* Phase colors — light versions */
+  --p1-bg:    rgba(59, 130, 246, 0.08);
+  --p1-border:rgba(59, 130, 246, 0.25);
+  --p1-text:  #1d4ed8;
+
+  --p2-bg:    rgba(16, 185, 129, 0.08);
+  --p2-border:rgba(16, 185, 129, 0.25);
+  --p2-text:  #065f46;
+
+  --p3-bg:    rgba(245, 158, 11, 0.10);
+  --p3-border:rgba(245, 158, 11, 0.30);
+  --p3-text:  #92400e;
+
+  --p4-bg:    rgba(236, 72, 153, 0.08);
+  --p4-border:rgba(236, 72, 153, 0.25);
+  --p4-text:  #9d174d;
+
+  --p5-bg:    rgba(139, 92, 246, 0.08);
+  --p5-border:rgba(139, 92, 246, 0.25);
+  --p5-text:  #4c1d95;
+
+  --p6-bg:    rgba(6, 182, 212, 0.08);
+  --p6-border:rgba(6, 182, 212, 0.25);
+  --p6-text:  #164e63;
+
+  --p7-bg:    rgba(234, 88, 12, 0.08);
+  --p7-border:rgba(234, 88, 12, 0.25);
+  --p7-text:  #7c2d12;
+
+  --p8-bg:    rgba(5, 150, 105, 0.08);
+  --p8-border:rgba(5, 150, 105, 0.25);
+  --p8-text:  #064e3b;
+
+  /* Effort colors — light */
+  --effort-light-bg:    rgba(0, 150, 120, 0.08);
+  --effort-light-text:  #065f46;
+  --effort-normal-bg:   rgba(180, 130, 0, 0.10);
+  --effort-normal-text: #92400e;
+  --effort-heavy-bg:    rgba(200, 50, 50, 0.08);
+  --effort-heavy-text:  #991b1b;
+
+  /* Resource badges — light */
+  --res-video-bg:   rgba(220, 38, 38, 0.08);
+  --res-video-text: #991b1b;
+  --res-docs-bg:    rgba(59, 130, 246, 0.08);
+  --res-docs-text:  #1d4ed8;
+  --res-tool-bg:    rgba(16, 185, 129, 0.08);
+  --res-tool-text:  #065f46;
+  --res-trail-bg:   rgba(245, 158, 11, 0.10);
+  --res-trail-text: #92400e;
+}
