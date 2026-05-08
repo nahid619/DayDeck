@@ -45,7 +45,7 @@ export default function DayContent({ plan, card, onNavigate, hasPrev, hasNext })
         </div>
       </div>
 
-      <div className={styles.contentBody}>
+      <div className={styles.contentBody} key={card?._id}>
         {plan.cardType === CARD_TYPES.DAY_PLAN  && <DayPlanCard  card={card} />}
         {plan.cardType === CARD_TYPES.STORIES   && <StoriesCard  card={card} />}
         {plan.cardType === CARD_TYPES.REFERENCE && <ReferenceCard card={card} />}

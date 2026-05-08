@@ -71,6 +71,12 @@
 .contentBody {
   padding: 24px 28px 48px;
   max-width: 900px;
+  animation: contentFadeIn 0.22s ease both;
+}
+
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
 }
 
 /* Day badge */
