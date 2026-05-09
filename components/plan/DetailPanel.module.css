@@ -269,3 +269,9 @@
   color: var(--muted2);
   line-height: 1.6;
 }
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .panel {
+    display: none;
+  }
+}

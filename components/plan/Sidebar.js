@@ -11,6 +11,7 @@ export default function Sidebar({
   plan, phases, cards, flatCards,
   selectedCard, onSelect,
   search, onSearch, filteredCards,
+  isOpen, onClose,
 }) {
   const [openPhases, setOpenPhases] = useState(() =>
     Object.fromEntries(phases.map(p => [p.phaseId, true]))
@@ -50,7 +51,7 @@ export default function Sidebar({
   const isSearching = !!(search.trim() && filteredCards);
 
   return (
-    <aside className={styles.sidebar} ref={containerRef}>
+    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`} ref={containerRef}>
       <div className={styles.searchRow}>
         <span className={styles.searchIcon}>⌕</span>
         <input
@@ -63,6 +64,8 @@ export default function Sidebar({
         {search && (
           <button className={styles.clearBtn} onClick={() => onSearch("")}>×</button>
         )}
+        {/* Mobile close button */}
+        <button className={styles.closeBtn} onClick={onClose} aria-label="Close sidebar">✕</button>
       </div>
 
       <div className={styles.planLabel}>{plan.title}</div>

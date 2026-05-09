@@ -236,3 +236,49 @@
 .card:hover .cardCount {
   color: var(--card-color, var(--accent));
 }
+/* ── Navigation loading overlay (card click → plan page) ── */
+.navOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(12, 14, 26, 0.72);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: navOverlayIn 0.15s ease both;
+}
+[data-theme="light"] .navOverlay {
+  background: rgba(240, 241, 246, 0.72);
+}
+@keyframes navOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.navRing {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 212, 170, 0.15);
+  border-top-color: var(--accent);
+  animation: navSpin 0.9s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes navSpin {
+  to { transform: rotate(360deg); }
+}
+
+.navDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: navDotPulse 0.9s ease-in-out infinite;
+}
+@keyframes navDotPulse {
+  0%, 100% { transform: scale(0.7); opacity: 0.5; }
+  50%       { transform: scale(1.2); opacity: 1; }
+}

@@ -1,8 +1,66 @@
 /* components/plan/PlanView.module.css */
+
 .body {
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr var(--detail-w);
   flex: 1;
   overflow: hidden;
   min-height: 0;
+  position: relative;
+}
+
+/* Mobile sidebar backdrop */
+.sidebarBackdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 99;
+  animation: fadeIn 0.2s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Mobile sidebar toggle button */
+.sidebarToggle {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 16px;
+  z-index: 98;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #0c0e1a;
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0, 212, 170, 0.35);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.sidebarToggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 212, 170, 0.45);
+}
+
+/* ── Responsive breakpoints ── */
+
+/* 1200px — hide right detail panel */
+@media (max-width: 1024px) {
+  .body {
+    grid-template-columns: var(--sidebar-w) 1fr;
+  }
+}
+
+/* 768px — hide sidebar from grid, make it a drawer */
+@media (max-width: 768px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+  .sidebarBackdrop { display: block; }
+  .sidebarToggle   { display: flex; align-items: center; justify-content: center; }
 }

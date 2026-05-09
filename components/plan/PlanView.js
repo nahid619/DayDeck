@@ -13,8 +13,9 @@ import styles       from "./PlanView.module.css";
 export default function PlanView({ plan, phases, cards, initialCardId }) {
   const router       = useRouter();
   const searchParams = useSearchParams();
-  const [selectedCard, setSelectedCard] = useState(null);
-  const [search,       setSearch]       = useState("");
+  const [selectedCard,  setSelectedCard]  = useState(null);
+  const [search,        setSearch]        = useState("");
+  const [sidebarOpen,   setSidebarOpen]   = useState(false);
   const didInit = useRef(false);
 
   // Build flat ordered card list
@@ -78,16 +79,32 @@ export default function PlanView({ plan, phases, cards, initialCardId }) {
 
   return (
     <div className={styles.body}>
+      {/* Mobile sidebar backdrop */}
+      {sidebarOpen && (
+        <div className={styles.sidebarBackdrop} onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {/* Mobile sidebar open button */}
+      <button
+        className={styles.sidebarToggle}
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open sidebar"
+      >
+        ☰
+      </button>
+
       <Sidebar
         plan={plan}
         phases={phases}
         cards={cards}
         flatCards={flatCards}
         selectedCard={selectedCard}
-        onSelect={selectCard}
+        onSelect={(card) => { selectCard(card); setSidebarOpen(false); }}
         search={search}
         onSearch={setSearch}
         filteredCards={filteredCards}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
       <DayContent
         plan={plan}

@@ -14,7 +14,8 @@ const TYPE_LABEL = {
 
 export default function HomeView({ plans }) {
   const router = useRouter();
-  const [theme, setTheme] = useState("dark");
+  const [theme,      setTheme]      = useState("dark");
+  const [navigating, setNavigating] = useState(false);
 
   // Sync theme from localStorage on mount
   useEffect(() => {
@@ -36,6 +37,15 @@ export default function HomeView({ plans }) {
 
   return (
     <div className={styles.page}>
+
+      {/* ── Navigation loading overlay ── */}
+      {navigating && (
+        <div className={styles.navOverlay}>
+          <div className={styles.navRing}>
+            <div className={styles.navDot} />
+          </div>
+        </div>
+      )}
 
       {/* ── Top Nav ── */}
       <header className={styles.nav}>
@@ -73,7 +83,10 @@ export default function HomeView({ plans }) {
             key={plan.slug}
             plan={plan}
             index={i}
-            onClick={() => router.push(`/plan/${plan.slug}`)}
+            onClick={() => {
+              setNavigating(true);
+              router.push(`/plan/${plan.slug}`);
+            }}
           />
         ))}
       </main>

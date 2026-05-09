@@ -29,3 +29,10 @@ input, textarea, select { font-family: inherit; }
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
+/* ── Responsive sidebar/panel widths ──────────────────────────── */
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-w: clamp(200px, 18vw, 260px);
+    --detail-w:  clamp(240px, 22vw, 300px);
+  }
+}

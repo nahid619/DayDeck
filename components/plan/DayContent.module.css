@@ -70,8 +70,8 @@
 /* Content body */
 .contentBody {
   padding: 24px 28px 48px;
-  max-width: 900px;
-  animation: contentFadeIn 0.22s ease both;
+  max-width: 1000px;
+  animation: contentFadeIn 0.25s ease both;
 }
 
 @keyframes contentFadeIn {
@@ -325,14 +325,12 @@
   font-family: var(--mono);
 }
 
-/* ── Phase 1 additions ── */
-
-/* Color accent bar at the top of each card */
+/* Color accent bar — full-width breakout via negative margins */
 .colorBar {
-  height: 3px;
-  border-radius: var(--radius) var(--radius) 0 0;
-  margin-bottom: 16px;
-  margin-top: -4px;
+  height: 4px;
+  width: calc(100% + 56px);  /* 28px × 2 side padding */
+  margin: -24px -28px 24px;  /* break out of contentBody top + sides */
+  flex-shrink: 0;
 }
 
 /* Badge row — effort + dayType side by side */

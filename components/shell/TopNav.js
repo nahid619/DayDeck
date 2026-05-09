@@ -1,11 +1,9 @@
 "use client";
 // components/shell/TopNav.js
-// Persistent two-row nav. Lives in plan layout so it never unmounts on plan switch.
-// Fixes: theme persistence (#9), dead search removed (#10), loading indicator (#26),
-//        tab arrows hidden when no overflow (#25).
 
 import { useRef, useState, useEffect, useTransition } from "react";
 import { useRouter, usePathname }                      from "next/navigation";
+import Link                                            from "next/link";
 import styles from "./TopNav.module.css";
 
 export default function TopNav({ allPlans, currentSlug }) {
@@ -18,6 +16,7 @@ export default function TopNav({ allPlans, currentSlug }) {
   const [canScrollRight, setCsr]    = useState(false);
   const [theme,  setTheme]          = useState("dark");
   const [isPending, startTransition] = useTransition();
+  const [menuOpen,  setMenuOpen]    = useState(false);
 
   // ── Theme: read from localStorage on mount, persist on change
   useEffect(() => {
@@ -73,70 +72,123 @@ export default function TopNav({ allPlans, currentSlug }) {
 
   function handleTabClick(slug) {
     if (slug === currentSlug) return;
+    setMenuOpen(false);
     startTransition(() => {
       router.push(`/plan/${slug}`);
     });
   }
 
-  const totalCards = allPlans.reduce((s, p) => s + (p.totalCards || 0), 0);
+  const totalCards   = allPlans.reduce((s, p) => s + (p.totalCards || 0), 0);
+  const currentPlan  = allPlans.find(p => p.slug === currentSlug);
 
   return (
-    <header className={styles.header}>
-      {/* Loading bar — shown while navigating (#26) */}
-      {isPending && <div className={styles.loadingBar} />}
-
-      {/* ── Row 1 ── */}
-      <div className={styles.row1}>
-        <div className={styles.logo}>
-          <span className={styles.logoDay}>Day</span>
-          <span className={styles.logoDot} />
-          <span className={styles.logoDeck}>Deck</span>
+    <>
+      {/* ── Full-screen pulse overlay while navigating ── */}
+      {isPending && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingRing}>
+            <div className={styles.loadingDot} />
+          </div>
         </div>
+      )}
 
-        <div className={styles.r1Right}>
-          <span className={`${styles.badge} ${styles.badgeGreen}`}>
-            {allPlans.length} Plans
-          </span>
-          <span className={styles.badge}>{totalCards} Cards</span>
-          <button className={styles.themeBtn} onClick={toggleTheme}>
-            {theme === "dark" ? "☀ Light" : "☾ Dark"}
-          </button>
-        </div>
-      </div>
+      <header className={styles.header}>
 
-      {/* ── Row 2 — tabs ── */}
-      <div className={styles.row2}>
-        <button
-          className={`${styles.arr} ${!canScrollLeft ? styles.arrHidden : ""}`}
-          onClick={() => scrollTabs(-1)}
-          aria-label="Scroll tabs left"
-        >‹</button>
+        {/* ── Row 1 ── */}
+        <div className={styles.row1}>
+          <Link href="/" className={styles.logo}>
+            <span className={styles.logoDay}>Day</span>
+            <span className={styles.logoDot} />
+            <span className={styles.logoDeck}>Deck</span>
+          </Link>
 
-        <div className={styles.tabsViewport} ref={viewportRef}>
-          <div
-            className={styles.tabsTrack}
-            ref={trackRef}
-            style={{ transform: `translateX(-${offset}px)` }}
-          >
-            {allPlans.map(plan => (
-              <button
-                key={plan.slug}
-                data-slug={plan.slug}
-                className={`${styles.tabBtn} ${plan.slug === currentSlug ? styles.tabActive : ""} ${isPending ? styles.tabPending : ""}`}
-                onClick={() => handleTabClick(plan.slug)}
-              >
-                {plan.tabLabel || plan.title}
-              </button>
-            ))}
+          <div className={styles.r1Right}>
+            <span className={`${styles.badge} ${styles.badgeGreen}`}>
+              {allPlans.length} Plans
+            </span>
+            <span className={styles.badge}>{totalCards} Cards</span>
+            <button className={styles.themeBtn} onClick={toggleTheme}>
+              {theme === "dark" ? "☀ Light" : "☾ Dark"}
+            </button>
           </div>
         </div>
 
-        <button
-          className={`${styles.arr} ${styles.arrRight} ${!canScrollRight ? styles.arrHidden : ""}`}
-          onClick={() => scrollTabs(1)}
-          aria-label="Scroll tabs right"
-        >›</button>
-      </div>
-    </header>
+        {/* ── Row 2 — tabs (desktop) + hamburger (mobile) ── */}
+        <div className={styles.row2}>
+
+          {/* Desktop tab track */}
+          <div className={styles.tabsDesktop}>
+            <button
+              className={`${styles.arr} ${!canScrollLeft ? styles.arrHidden : ""}`}
+              onClick={() => scrollTabs(-1)}
+              aria-label="Scroll tabs left"
+            >‹</button>
+
+            <div className={styles.tabsViewport} ref={viewportRef}>
+              <div
+                className={styles.tabsTrack}
+                ref={trackRef}
+                style={{ transform: `translateX(-${offset}px)` }}
+              >
+                {allPlans.map(plan => (
+                  <button
+                    key={plan.slug}
+                    data-slug={plan.slug}
+                    className={`${styles.tabBtn} ${plan.slug === currentSlug ? styles.tabActive : ""} ${isPending ? styles.tabPending : ""}`}
+                    onClick={() => handleTabClick(plan.slug)}
+                  >
+                    {plan.tabLabel || plan.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              className={`${styles.arr} ${styles.arrRight} ${!canScrollRight ? styles.arrHidden : ""}`}
+              onClick={() => scrollTabs(1)}
+              aria-label="Scroll tabs right"
+            >›</button>
+          </div>
+
+          {/* Mobile: current plan label + hamburger */}
+          <div className={styles.tabsMobile}>
+            <span className={styles.currentLabel}>
+              {currentPlan?.emoji && <span>{currentPlan.emoji}</span>}
+              {currentPlan?.tabLabel || currentPlan?.title || "Plans"}
+            </span>
+            <button
+              className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Toggle navigation"
+            >
+              <span className={styles.hamLine} />
+              <span className={styles.hamLine} />
+              <span className={styles.hamLine} />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile dropdown */}
+        {menuOpen && (
+          <>
+            <div className={styles.menuBackdrop} onClick={() => setMenuOpen(false)} />
+            <nav className={styles.menuDropdown}>
+              {allPlans.map(plan => (
+                <button
+                  key={plan.slug}
+                  className={`${styles.menuItem} ${plan.slug === currentSlug ? styles.menuItemActive : ""}`}
+                  onClick={() => handleTabClick(plan.slug)}
+                >
+                  {plan.emoji && <span className={styles.menuEmoji}>{plan.emoji}</span>}
+                  <span className={styles.menuLabel}>{plan.tabLabel || plan.title}</span>
+                  {plan.slug === currentSlug && <span className={styles.menuCheck}>✓</span>}
+                </button>
+              ))}
+            </nav>
+          </>
+        )}
+
+      </header>
+    </>
   );
 }

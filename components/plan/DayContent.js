@@ -46,6 +46,10 @@ export default function DayContent({ plan, card, onNavigate, hasPrev, hasNext })
       </div>
 
       <div className={styles.contentBody} key={card?._id}>
+        {/* Color accent bar — full width, outside padding */}
+        {card?.color && (
+          <div className={styles.colorBar} style={{ background: card.color }} />
+        )}
         {plan.cardType === CARD_TYPES.DAY_PLAN  && <DayPlanCard  card={card} />}
         {plan.cardType === CARD_TYPES.STORIES   && <StoriesCard  card={card} />}
         {plan.cardType === CARD_TYPES.REFERENCE && <ReferenceCard card={card} />}
@@ -65,7 +69,6 @@ function DayPlanCard({ card }) {
 
   return (
     <>
-      {card.color && <div className={styles.colorBar} style={{ background: card.color }} />}
       <div className={styles.dayBadge}>
         Day {card.day || card.order}
         {card.weekLabel && <> · {card.weekLabel}</>}
@@ -125,7 +128,6 @@ function DayPlanCard({ card }) {
 function StoriesCard({ card }) {
   return (
     <>
-      {card.color && <div className={styles.colorBar} style={{ background: card.color }} />}
       <div className={styles.dayBadge}>
         Story #{card.storyId}
         {card.sectionTitle && <> · {card.sectionTitle}</>}
@@ -160,7 +162,6 @@ function ReferenceCard({ card }) {
 
   return (
     <>
-      {card.color && <div className={styles.colorBar} style={{ background: card.color }} />}
       {card.topic && (
         <div className={styles.dayBadge}>
           {card.modTitle || (typeof card.filter==="string" ? card.filter : "") || card.topic}
