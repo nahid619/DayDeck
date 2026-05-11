@@ -57,10 +57,16 @@ export default function TopNav({ allPlans, currentSlug }) {
       setCsl(offset > 0);
       setCsr(offset < maxOff);
     }
-    check();
+    // rAF ensures the browser has finished laying out the flex track
+    // before we measure scrollWidth (fixes arrows not appearing on load)
+    const rafId = requestAnimationFrame(check);
     const ro = new ResizeObserver(check);
     if (viewportRef.current) ro.observe(viewportRef.current);
-    return () => ro.disconnect();
+    if (trackRef.current)    ro.observe(trackRef.current);   // catch tab-width changes too
+    return () => {
+      cancelAnimationFrame(rafId);
+      ro.disconnect();
+    };
   }, [offset]);
 
   function scrollTabs(dir) {
