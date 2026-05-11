@@ -1,7 +1,7 @@
 "use client";
 // components/shell/TopNav.js
 
-import { useRef, useState, useEffect, useTransition } from "react";
+import { useRef, useState, useEffect, useLayoutEffect, useTransition } from "react";
 import { useRouter, usePathname }                      from "next/navigation";
 import Link                                            from "next/link";
 import styles from "./TopNav.module.css";
@@ -50,29 +50,30 @@ export default function TopNav({ allPlans, currentSlug }) {
   }, [currentSlug]); // eslint-disable-line
 
   // ── Detect overflow to show/hide scroll arrows (#25)
-  useEffect(() => {
+  // scrollWidth on a transformed flex container is unreliable in some browsers.
+  // Summing each tab button's offsetWidth is transform-immune and always correct.
+  function getMaxOffset() {
+    if (!trackRef.current || !viewportRef.current) return 0;
+    const totalTabsWidth = Array.from(trackRef.current.children)
+      .reduce((sum, t) => sum + t.offsetWidth, 0);
+    return Math.max(0, totalTabsWidth - viewportRef.current.clientWidth);
+  }
+
+  useLayoutEffect(() => {
     function check() {
-      if (!trackRef.current || !viewportRef.current) return;
-      const maxOff = Math.max(0, trackRef.current.scrollWidth - viewportRef.current.clientWidth);
+      const maxOff = getMaxOffset();
       setCsl(offset > 0);
       setCsr(offset < maxOff);
     }
-    // rAF ensures the browser has finished laying out the flex track
-    // before we measure scrollWidth (fixes arrows not appearing on load)
-    const rafId = requestAnimationFrame(check);
+    check();
     const ro = new ResizeObserver(check);
     if (viewportRef.current) ro.observe(viewportRef.current);
-    if (trackRef.current)    ro.observe(trackRef.current);   // catch tab-width changes too
-    return () => {
-      cancelAnimationFrame(rafId);
-      ro.disconnect();
-    };
-  }, [offset]);
+    if (trackRef.current)    ro.observe(trackRef.current);
+    return () => ro.disconnect();
+  }, [offset]); // eslint-disable-line
 
   function scrollTabs(dir) {
-    if (!trackRef.current || !viewportRef.current) return;
-    const vpW    = viewportRef.current.clientWidth;
-    const maxOff = Math.max(0, trackRef.current.scrollWidth - vpW);
+    const maxOff = getMaxOffset();
     setOffset(prev => Math.max(0, Math.min(maxOff, prev + dir * 140)));
   }
 
