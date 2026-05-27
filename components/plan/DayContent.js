@@ -53,6 +53,7 @@ export default function DayContent({ plan, card, onNavigate, hasPrev, hasNext })
         {plan.cardType === CARD_TYPES.DAY_PLAN  && <DayPlanCard  card={card} />}
         {plan.cardType === CARD_TYPES.STORIES   && <StoriesCard  card={card} />}
         {plan.cardType === CARD_TYPES.REFERENCE && <ReferenceCard card={card} />}
+        {plan.cardType === CARD_TYPES.FLEX       && <FlexCard      card={card} />}
       </div>
     </main>
   );
@@ -304,6 +305,56 @@ function ConceptItem({ item }) {
         </span>
       ))}
     </div>
+  );
+}
+
+
+function FlexCard({ card }) {
+  const sections = Array.isArray(card.sections) ? card.sections : [];
+
+  return (
+    <>
+      {card.badge && (
+        <div className={styles.dayBadge}>{card.badge}</div>
+      )}
+      <h1 className={styles.dayTitle}>{card.title}</h1>
+
+      {sections.map((sec, i) => {
+        if (!sec || !sec.label) return null;
+        const content = sec.content || "";
+
+        if (sec.type === "code") {
+          return (
+            <Section key={i} label={sec.label}>
+              <pre className={styles.codeBlock}><code>{content}</code></pre>
+            </Section>
+          );
+        }
+
+        if (sec.type === "list") {
+          const items = content.split("\n").map(l => l.trim()).filter(Boolean);
+          return (
+            <Section key={i} label={sec.label}>
+              <div className={styles.acList}>
+                {items.map((item, j) => (
+                  <div key={j} className={styles.acItem}>
+                    <span className={styles.acNum}>{j + 1}</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </Section>
+          );
+        }
+
+        // default: "text" — pre-wrap paragraph
+        return (
+          <Section key={i} label={sec.label}>
+            <div className={styles.practiceBox}>{content}</div>
+          </Section>
+        );
+      })}
+    </>
   );
 }
 
