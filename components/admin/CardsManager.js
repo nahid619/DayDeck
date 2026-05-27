@@ -75,6 +75,7 @@ export default function CardsManager({ plan, phase, onToast }) {
   function cardSummary(card) {
     if (plan.cardType === CARD_TYPES.DAY_PLAN)  return `Day ${card.day || card.order} — ${card.topic || ""}`;
     if (plan.cardType === CARD_TYPES.STORIES)   return `#${card.storyId} — ${card.title || ""}`;
+    if (plan.cardType === CARD_TYPES.FLEX)       return card.title || `Flex card #${card.order}`;
     return card.title || card.topic || `Entry #${card.order}`;
   }
 
@@ -267,6 +268,13 @@ function CardField({ field, value, onChange }) {
     </div>
   );
 
+  if (type === "flex-sections") return (
+    <div className={styles.fieldRow}>
+      {labelEl}
+      <FlexSectionsInput value={Array.isArray(value) ? value : []} onChange={onChange} />
+    </div>
+  );
+
   return null;
 }
 
@@ -306,6 +314,75 @@ function TagsInput({ value, onChange }) {
   );
 }
 
+
+/* ── Flex Sections input — dynamic array of {label, type, content} ── */
+function FlexSectionsInput({ value, onChange }) {
+  const BLANK = { label: "", type: "text", content: "" };
+
+  function addSection()       { onChange([...value, { ...BLANK }]); }
+  function removeSection(i)   { onChange(value.filter((_, idx) => idx !== i)); }
+  function moveUp(i)          { if (i === 0) return; const n=[...value]; [n[i-1],n[i]]=[n[i],n[i-1]]; onChange(n); }
+  function moveDown(i)        { if (i === value.length-1) return; const n=[...value]; [n[i],n[i+1]]=[n[i+1],n[i]]; onChange(n); }
+  function update(i, k, v)    { const n=[...value]; n[i]={...n[i],[k]:v}; onChange(n); }
+
+  const typeHints = {
+    text: "Free paragraph. Newlines are preserved.",
+    list: "One item per line — renders as a numbered list.",
+    code: "Monospace code block — paste code or commands here.",
+  };
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:"10px",width:"100%"}}>
+      {value.map((sec, i) => (
+        <div key={i} style={{
+          border:"1px solid var(--border)",borderRadius:"6px",
+          padding:"10px 12px",display:"flex",flexDirection:"column",gap:"6px",
+          background:"var(--surf2)"
+        }}>
+          <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
+            <input
+              className={styles.input}
+              value={sec.label || ""}
+              onChange={e => update(i,"label",e.target.value)}
+              placeholder="Section label (e.g. Algorithm, Problem, What to learn)"
+              style={{flex:1}}
+            />
+            <select
+              className={styles.input}
+              value={sec.type || "text"}
+              onChange={e => update(i,"type",e.target.value)}
+              style={{width:"90px",flexShrink:0}}
+              title={typeHints[sec.type || "text"]}
+            >
+              <option value="text">text</option>
+              <option value="list">list</option>
+              <option value="code">code</option>
+            </select>
+            <button className={styles.iconBtn} onClick={() => moveUp(i)}   title="Move up">↑</button>
+            <button className={styles.iconBtn} onClick={() => moveDown(i)} title="Move down">↓</button>
+            <button className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={() => removeSection(i)} title="Remove">✕</button>
+          </div>
+          <div style={{fontSize:"0.75em",opacity:0.55,paddingLeft:"2px"}}>
+            {typeHints[sec.type || "text"]}
+          </div>
+          <textarea
+            className={styles.textarea}
+            rows={sec.type === "code" ? 5 : 3}
+            value={sec.content || ""}
+            onChange={e => update(i,"content",e.target.value)}
+            placeholder={
+              sec.type === "list" ? "First item\nSecond item\nThird item" :
+              sec.type === "code" ? "paste code here..." :
+              "Section content..."
+            }
+            style={sec.type === "code" ? {fontFamily:"monospace",fontSize:"0.85em"} : {}}
+          />
+        </div>
+      ))}
+      <button className={styles.srcAddBtn} onClick={addSection}>+ Add Section</button>
+    </div>
+  );
+}
 /* ── Sources input — dynamic array of {t, u, b} objects ── */
 function SourcesInput({ value, onChange }) {
   const BLANK_SRC = { t:"", u:"", b:"docs" };
