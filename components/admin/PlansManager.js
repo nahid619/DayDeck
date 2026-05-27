@@ -3,7 +3,7 @@
 // Issues fixed: #13 hover-only delete, #14 error in delete modal.
 
 import { useState, useRef } from "react";
-import { CARD_TYPES, PLAN_REGISTRY } from "@/lib/cardSchema";
+import { CARD_TYPES } from "@/lib/cardSchema";
 import useMutation from "@/hooks/useMutation";
 import AdminModal  from "./AdminModal";
 import styles      from "./PlansManager.module.css";
