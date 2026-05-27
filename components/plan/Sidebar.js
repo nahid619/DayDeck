@@ -152,6 +152,7 @@ function CardLink({ card, cardType, isActive, activeRef, activeColor, onClick })
         {cardType === CARD_TYPES.DAY_PLAN  && `${card.day || card.order}`}
         {cardType === CARD_TYPES.STORIES   && (card.storyId || card.order)}
         {cardType === CARD_TYPES.REFERENCE && (card.modNum || card.order || "#")}
+        {cardType === CARD_TYPES.FLEX       && (card.badge || `Q${card.order ?? 1}`)}
       </span>
       <span className={styles.cardLabel}>
         {typeof card.topic === "string" ? card.topic
