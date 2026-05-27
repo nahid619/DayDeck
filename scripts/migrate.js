@@ -13,7 +13,105 @@
 import { readFileSync, readdirSync, existsSync } from "fs";
 import { join, basename } from "path";
 import { MongoClient } from "mongodb";
-import { PLAN_REGISTRY, CARD_TYPES } from "../lib/cardSchema.js";
+import { CARD_TYPES } from "../lib/cardSchema.js";
+
+// ─────────────────────────────────────────────────────────
+// PLAN REGISTRY — lives here because it is only ever used
+// by this seeder script. At runtime, MongoDB is the source
+// of truth for plans (managed via the admin panel).
+// ─────────────────────────────────────────────────────────
+const PLAN_REGISTRY = {
+  "sf-l1-stories.html": {
+    slug: "sf-l1-stories", title: "SF L1 Stories",
+    fullTitle: "Salesforce Admin L1 — User Stories", emoji: "☁️",
+    color: "#0176D3", tabLabel: "☁️ SF L1 Stories",
+    cardType: CARD_TYPES.STORIES, order: 1,
+  },
+  "sf-l2-stories.html": {
+    slug: "sf-l2-stories", title: "SF L2 Stories",
+    fullTitle: "Salesforce Admin L2 — User Stories", emoji: "☁️",
+    color: "#7b61ff", tabLabel: "☁️ SF L2 Stories",
+    cardType: CARD_TYPES.STORIES, order: 2,
+  },
+  "python-40day.html": {
+    slug: "python-40day", title: "Python 40-Day",
+    fullTitle: "Python — Zero to Automation", emoji: "🐍",
+    color: "#06d6a0", tabLabel: "🐍 Python 40-Day",
+    cardType: CARD_TYPES.DAY_PLAN, order: 3,
+  },
+  "ai-learning-journey.html": {
+    slug: "ai-learning-journey", title: "AI Journey",
+    fullTitle: "AI & Machine Learning Journey", emoji: "🤖",
+    color: "#06d6a0", tabLabel: "🤖 AI Journey",
+    cardType: CARD_TYPES.DAY_PLAN, order: 4,
+  },
+  "tech-core-concepts.html": {
+    slug: "tech-core-concepts", title: "Tech Concepts",
+    fullTitle: "Core Technical Concepts", emoji: "🧠",
+    color: "#06d6a0", tabLabel: "🧠 Tech Concepts",
+    cardType: CARD_TYPES.REFERENCE, order: 5,
+  },
+  "api-complete-guide.html": {
+    slug: "api-complete-guide", title: "API Guide",
+    fullTitle: "API — Complete Guide", emoji: "🌐",
+    color: "#60A5FA", tabLabel: "🌐 API Guide",
+    cardType: CARD_TYPES.REFERENCE, order: 6,
+  },
+  "apex-30day.html": {
+    slug: "apex-30day", title: "Apex 30-Day",
+    fullTitle: "Salesforce Apex — Noob to Production", emoji: "☁️",
+    color: "#7b61ff", tabLabel: "☁️ Apex 30-Day",
+    cardType: CARD_TYPES.DAY_PLAN, order: 7,
+  },
+  "lwc-30day.html": {
+    slug: "lwc-30day", title: "LWC 30-Day",
+    fullTitle: "Lightning Web Components — 30 Days", emoji: "⚡",
+    color: "#00d4ff", tabLabel: "⚡ LWC 30-Day",
+    cardType: CARD_TYPES.DAY_PLAN, order: 8,
+  },
+  "slds-doc.html": {
+    slug: "slds-doc", title: "SLDS Reference",
+    fullTitle: "Salesforce Lightning Design System Reference", emoji: "⚡",
+    color: "#ffd166", tabLabel: "⚡ SLDS Reference",
+    cardType: CARD_TYPES.REFERENCE, order: 9,
+  },
+  "java-60day.html": {
+    slug: "java-60day", title: "Java 60-Day",
+    fullTitle: "Java — 60 Day Mastery Plan", emoji: "☕",
+    color: "#34D399", tabLabel: "☕ Java 60-Day",
+    cardType: CARD_TYPES.DAY_PLAN, order: 10,
+  },
+  "experience-cloud-30day.html": {
+    slug: "experience-cloud-30day", title: "Experience Cloud",
+    fullTitle: "Salesforce Experience Cloud — 30 Days", emoji: "🌐",
+    color: "#0176D3", tabLabel: "🌐 Experience Cloud 30-Day",
+    cardType: CARD_TYPES.DAY_PLAN, order: 11,
+  },
+  "ai_engineer_30day_roadmap.html": {
+    slug: "ai-engineer-30day", title: "AI Engineer 30-Day",
+    fullTitle: "Junior AI Engineer — 30-Day Roadmap", emoji: "🤖",
+    color: "#a855f7", tabLabel: "🤖 AI Engineer 30-Day",
+    cardType: CARD_TYPES.DAY_PLAN, order: 12,
+  },
+  "data_structures_guide.html": {
+    slug: "data-structures-guide", title: "Data Structures",
+    fullTitle: "Data Structures — Zero to Advanced", emoji: "🗂️",
+    color: "#f59e0b", tabLabel: "🗂️ Data Structures",
+    cardType: CARD_TYPES.DAY_PLAN, order: 13,
+  },
+  "ai_fundamentals.html": {
+    slug: "ai-fundamentals", title: "AI Fundamentals",
+    fullTitle: "AI Fundamentals Everyone Should Know", emoji: "🧠",
+    color: "#06d6a0", tabLabel: "🧠 AI Fundamentals",
+    cardType: CARD_TYPES.DAY_PLAN, order: 14,
+  },
+  "personal_growth_roadmap.html": {
+    slug: "personal-growth-roadmap", title: "Personal Growth",
+    fullTitle: "Personal Growth — 6 Pillars", emoji: "🌱",
+    color: "#1d6db5", tabLabel: "🌱 Personal Growth",
+    cardType: CARD_TYPES.DAY_PLAN, order: 15,
+  },
+};
 
 // ─────────────────────────────────────────────────────────
 // CONFIG
@@ -173,7 +271,7 @@ function extractCardAttrs(html) {
 
     const tag = html.slice(divIdx, closeIdx + 1);
     // Quick check: does this tag's class contain "day-card"?
-    const classMatch = tag.match(/\bclass=["']([^"']*)["']/);
+    const classMatch = tag.match(/\bclass=["']([^"']*)['"]/);
     if (classMatch && classMatch[1].includes("day-card")) {
       cards.push(extractDataAttrs(tag));
     }
