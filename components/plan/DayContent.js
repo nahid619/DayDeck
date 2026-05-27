@@ -314,9 +314,9 @@ function FlexCard({ card }) {
 
   return (
     <>
-      {(card.badge || card.order) && (
-        <div className={styles.dayBadge}>{card.badge || `Q${card.order}`}</div>
-      )}
+      <div className={styles.dayBadge}>
+        {card.badge || `Q${card.order ?? 1}`}
+      </div>
       <h1 className={styles.dayTitle}>{card.title}</h1>
 
       {sections.map((sec, i) => {
