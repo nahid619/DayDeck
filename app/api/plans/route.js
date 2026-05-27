@@ -5,6 +5,8 @@ import { getDb }                               from "@/lib/mongodb";
 import { ok, fail, parseBody, requireAuth }    from "@/lib/apiHelpers";
 
 // GET /api/plans — return all plans sorted by order
+// Counters (totalCards, totalPhases) are computed live from the DB
+// so they can never drift, even if $inc operations are missed.
 export async function GET(request) {
   const authError = await requireAuth(request);
   if (authError) return authError;
@@ -16,7 +18,19 @@ export async function GET(request) {
       .find({})
       .sort({ order: 1 })
       .toArray();
-    return ok(plans);
+
+    // Compute accurate counts in parallel for all plans
+    const plansWithCounts = await Promise.all(
+      plans.map(async (plan) => {
+        const [totalCards, totalPhases] = await Promise.all([
+          db.collection("cards").countDocuments({ planSlug: plan.slug }),
+          db.collection("phases").countDocuments({ planSlug: plan.slug }),
+        ]);
+        return { ...plan, totalCards, totalPhases };
+      })
+    );
+
+    return ok(plansWithCounts);
   } catch (e) {
     return fail(e.message, 500);
   }
@@ -38,6 +52,16 @@ export async function POST(request) {
 
     if (!slug || !title || !cardType) {
       return fail("slug, title, and cardType are required");
+    }
+
+    // Validate slug format — URL-safe only
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      return fail("Slug must be lowercase letters, numbers, and hyphens only (e.g. my-plan)");
+    }
+
+    // Validate color if provided
+    if (color && !/^#[0-9a-fA-F]{6}$/.test(color)) {
+      return fail("Color must be a valid 6-digit hex value (e.g. #60A5FA)");
     }
 
     const db = await getDb();
