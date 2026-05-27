@@ -12,6 +12,7 @@ const CARD_TYPE_OPTIONS = [
   { value: CARD_TYPES.DAY_PLAN,  label: "Day Plan (day-by-day schedule)" },
   { value: CARD_TYPES.STORIES,   label: "Stories (user story format)" },
   { value: CARD_TYPES.REFERENCE, label: "Reference (docs / SLDS style)" },
+  { value: CARD_TYPES.FLEX,      label: "Flex (custom freeform sections)" },
 ];
 
 const BLANK_PLAN = {
@@ -212,6 +213,7 @@ function PlanForm({ data, onChange, onTitleChange, isEdit }) {
             { value: "day-plan",  label: "Day Plan" },
             { value: "stories",   label: "Stories" },
             { value: "reference", label: "Reference" },
+            { value: "flex",      label: "Flex (custom sections)" },
           ].map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </Row>
