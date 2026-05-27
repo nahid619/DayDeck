@@ -314,8 +314,8 @@ function FlexCard({ card }) {
 
   return (
     <>
-      {card.badge && (
-        <div className={styles.dayBadge}>{card.badge}</div>
+      {(card.badge || card.order) && (
+        <div className={styles.dayBadge}>{card.badge || `Q${card.order}`}</div>
       )}
       <h1 className={styles.dayTitle}>{card.title}</h1>
 
