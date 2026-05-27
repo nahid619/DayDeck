@@ -5,6 +5,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter, useSearchParams }            from "next/navigation";
 import { CARD_TYPES }                            from "@/lib/cardSchema";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Sidebar      from "./Sidebar";
 import DayContent   from "./DayContent";
 import DetailPanel  from "./DetailPanel";
@@ -93,32 +94,40 @@ export default function PlanView({ plan, phases, cards, initialCardId }) {
         ☰
       </button>
 
-      <Sidebar
-        plan={plan}
-        phases={phases}
-        cards={cards}
-        flatCards={flatCards}
-        selectedCard={selectedCard}
-        onSelect={(card) => { selectCard(card); setSidebarOpen(false); }}
-        search={search}
-        onSearch={setSearch}
-        filteredCards={filteredCards}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
-      <DayContent
-        plan={plan}
-        card={selectedCard}
-        onNavigate={navigate}
-        hasPrev={selectedIdx > 0}
-        hasNext={selectedIdx >= 0 && selectedIdx < displayList.length - 1}
-      />
-      <DetailPanel
-        plan={plan}
-        phases={phases}
-        cards={cards}
-        selectedCard={selectedCard}
-      />
+      <ErrorBoundary>
+        <Sidebar
+          plan={plan}
+          phases={phases}
+          cards={cards}
+          flatCards={flatCards}
+          selectedCard={selectedCard}
+          onSelect={(card) => { selectCard(card); setSidebarOpen(false); }}
+          search={search}
+          onSearch={setSearch}
+          filteredCards={filteredCards}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <DayContent
+          plan={plan}
+          card={selectedCard}
+          onNavigate={navigate}
+          hasPrev={selectedIdx > 0}
+          hasNext={selectedIdx >= 0 && selectedIdx < displayList.length - 1}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <DetailPanel
+          plan={plan}
+          phases={phases}
+          cards={cards}
+          selectedCard={selectedCard}
+        />
+      </ErrorBoundary>
     </div>
   );
 }
