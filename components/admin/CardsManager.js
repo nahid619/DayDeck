@@ -106,6 +106,7 @@ export default function CardsManager({ plan, phase, onToast }) {
                 {plan.cardType === CARD_TYPES.DAY_PLAN  && (card.day || card.order)}
                 {plan.cardType === CARD_TYPES.STORIES   && `#${card.storyId || card.order}`}
                 {plan.cardType === CARD_TYPES.REFERENCE && (card.modNum || card.order || "—")}
+                {plan.cardType === CARD_TYPES.FLEX       && (card.badge || `Q${card.order ?? 1}`)}
               </span>
               <div className={styles.cardInfo}>
                 <span className={styles.cardTitle}>{cardSummary(card)}</span>
