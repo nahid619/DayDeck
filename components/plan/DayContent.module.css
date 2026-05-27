@@ -189,6 +189,7 @@
   font-size: var(--text-base);
   color: var(--text);
   line-height: 1.8;
+  white-space: pre-wrap;
 }
 
 /* User story box */
@@ -202,6 +203,7 @@
   color: var(--text);
   line-height: 1.8;
   font-style: italic;
+  white-space: pre-wrap;
 }
 
 /* Acceptance criteria */
