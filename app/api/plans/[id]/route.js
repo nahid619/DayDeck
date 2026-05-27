@@ -13,7 +13,7 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
-    // Fix: validate BEFORE building the query so we never pass { _id: null } to MongoDB
+    // Validate BEFORE building the query so we never pass { _id: null } to MongoDB
     const isHex24 = id.length === 24 && /^[0-9a-f]{24}$/i.test(id);
     const oid     = isHex24 ? toObjectId(id) : null;
     if (isHex24 && !oid) return fail("Invalid id");
@@ -44,6 +44,16 @@ export async function PUT(request, { params }) {
     // Strip protected fields the client must not overwrite
     const { _id, createdAt, totalCards, totalPhases, ...rest } = body;
 
+    // Validate slug format if being changed
+    if (rest.slug && !/^[a-z0-9-]+$/.test(rest.slug)) {
+      return fail("Slug must be lowercase letters, numbers, and hyphens only (e.g. my-plan)");
+    }
+
+    // Validate color if being changed
+    if (rest.color && !/^#[0-9a-fA-F]{6}$/.test(rest.color)) {
+      return fail("Color must be a valid 6-digit hex value (e.g. #60A5FA)");
+    }
+
     const db = await getDb();
 
     // Fetch the existing plan so we can detect a slug change
@@ -57,7 +67,7 @@ export async function PUT(request, { params }) {
         .findOne({ slug: rest.slug, _id: { $ne: oid } });
       if (conflict) return fail(`Slug "${rest.slug}" is already taken`, 409);
 
-      // Fix: cascade the slug rename to all phases and cards that reference the old slug
+      // Cascade the slug rename to all phases and cards that reference the old slug
       await db.collection("phases").updateMany(
         { planSlug: existing.slug },
         { $set: { planSlug: rest.slug } }
