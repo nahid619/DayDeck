@@ -139,3 +139,23 @@
 .cardItem:focus-within .cardActions {
   opacity: 1;
 }
+.smartBtn {
+  padding: 6px 14px;
+  background: none;
+  border: 1px solid rgba(45, 212, 191, 0.35);   /* teal outline */
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 12px;
+  font-family: var(--font);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.smartBtn:hover {
+  background: rgba(45, 212, 191, 0.08);
+  border-color: var(--accent);
+}
+

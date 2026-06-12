@@ -1,0 +1,233 @@
+/* components/admin/SmartPaste.module.css
+   Inherits the admin dark theme (--surf, --border, --accent, --text, --muted, etc.)
+   from globals.css — no hard-coded colours except the teal spark. */
+
+/* ── Overlay ── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 16px;
+}
+
+/* ── Panel ── */
+.panel {
+  background: var(--surf);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  width: min(660px, 100%);
+  display: flex;
+  flex-direction: column;
+  max-height: 88dvh;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Header ── */
+.hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.hdrLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sparkIcon {
+  font-size: 20px;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 2px;
+}
+.sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.closeBtn:hover { color: var(--text); }
+
+/* ── Body ── */
+.body {
+  padding: 18px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Mode selector ── */
+.modeRow {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.modeBtn {
+  flex: 1;
+  padding: 14px 12px;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.modeBtn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--surf3, rgba(255,255,255,0.04));
+}
+.modeBtnActive {
+  background: rgba(0, 212, 170, 0.07);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.modeIcon {
+  font-size: 20px;
+  line-height: 1;
+  display: block;
+}
+.modeLabel {
+  font-size: 13px;
+  font-weight: 700;
+  display: block;
+}
+.modeSub {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.65;
+  display: block;
+}
+
+/* ── Textarea ── */
+.rawInput {
+  flex: 1;
+  min-height: 260px;
+  resize: vertical;
+  background: var(--surf2, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 12.5px;
+  line-height: 1.7;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+}
+.rawInput:focus { border-color: var(--accent); }
+.rawInput::placeholder { color: var(--muted); opacity: 0.5; }
+
+/* ── Error ── */
+.errorBox {
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.22);
+  border-radius: 7px;
+  color: var(--accent2, #ff6b6b);
+  font-size: 12.5px;
+  padding: 10px 13px;
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+/* ── Hint ── */
+.hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+.hintKbd {
+  font-family: monospace;
+  background: var(--border);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.cancelBtn {
+  padding: 8px 18px;
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius, 7px);
+  color: var(--muted);
+  font-size: 13px;
+  font-family: var(--font);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cancelBtn:hover:not(:disabled) { color: var(--text); border-color: var(--border2); }
+.cancelBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.parseBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius, 7px);
+  color: #0C0E1A;
+  font-size: 13px;
+  font-family: var(--font);
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.parseBtn:hover:not(:disabled) { opacity: 0.88; }
+.parseBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Spinner ── */
+.spinner {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(12, 14, 26, 0.25);
+  border-top-color: #0C0E1A;
+  border-radius: 50%;
+  animation: sp 0.6s linear infinite;
+}
+@keyframes sp { to { transform: rotate(360deg); } }

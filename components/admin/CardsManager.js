@@ -8,6 +8,7 @@ import { CARD_TYPES, CARD_FIELDS } from "@/lib/cardSchema";
 import useFetch    from "@/hooks/useFetch";
 import useMutation from "@/hooks/useMutation";
 import AdminModal  from "./AdminModal";
+import SmartPaste  from "./SmartPaste";
 import styles      from "./CardsManager.module.css";
 
 export default function CardsManager({ plan, phase, onToast }) {
@@ -15,11 +16,12 @@ export default function CardsManager({ plan, phase, onToast }) {
   const { data: cards, loading, refetch } = useFetch(url);
   const { mutate, loading: saving }       = useMutation();
 
-  const [modal,    setModal]    = useState(null);
-  const [formData, setFormData] = useState({});
-  const [error,    setError]    = useState("");
-  const [showAll,  setShowAll]  = useState(false);
-  const [deleteError, setDeleteError] = useState("");
+  const [modal,          setModal]          = useState(null);
+  const [formData,       setFormData]       = useState({});
+  const [error,          setError]          = useState("");
+  const [showAll,        setShowAll]        = useState(false);
+  const [deleteError,    setDeleteError]    = useState("");
+  const [showSmartPaste, setShowSmartPaste] = useState(false);
 
   // Reset when phase changes
   useEffect(() => { setModal(null); setError(""); setShowAll(false); }, [phase._id]);
@@ -34,6 +36,31 @@ export default function CardsManager({ plan, phase, onToast }) {
   /* ── Add ── */
   function openAdd() {
     setFormData(blankCard()); setError(""); setModal("add");
+  }
+
+  /* ── Smart Paste ── */
+  function openSmartPaste() {
+    setError("");
+    setShowSmartPaste(true);
+  }
+
+  function handleSmartParsed(parsed) {
+    // Build the full formData in one shot — no conditional spreading,
+    // no truthy checks that would silently drop empty strings.
+    const merged = {
+      ...blankCard(),
+      title:    typeof parsed.title    === "string" ? parsed.title    : "",
+      badge:    typeof parsed.badge    === "string" ? parsed.badge    : "",
+      color:    typeof parsed.color    === "string" ? parsed.color    : "",
+      sections: Array.isArray(parsed.sections)      ? parsed.sections : [],
+      // day-plan / stories may also surface a topic field
+      ...(parsed.topic ? { topic: parsed.topic } : {}),
+    };
+    // Set formData first, then open modal — avoids any batching edge cases
+    setFormData(merged);
+    setError("");
+    setShowSmartPaste(false);
+    setModal("add");
   }
 
   async function handleAdd() {
@@ -89,6 +116,7 @@ export default function CardsManager({ plan, phase, onToast }) {
           <span className={styles.cardCount}>{(cards || []).length} cards</span>
         </div>
         <button className={styles.addBtn} onClick={openAdd}>+ Card</button>
+        <button className={styles.smartBtn} onClick={openSmartPaste}>✦ Smart Paste</button>
       </div>
 
       {/* Cards list */}
@@ -160,6 +188,15 @@ export default function CardsManager({ plan, phase, onToast }) {
           Delete <strong>{cardSummary(formData)}</strong>? This cannot be undone.
         </p>
       </AdminModal>
+
+      {/* Smart Paste — paste raw text, AI parses → opens Add Card pre-filled */}
+      {showSmartPaste && (
+        <SmartPaste
+          cardType={plan.cardType}
+          onParsed={handleSmartParsed}
+          onClose={() => setShowSmartPaste(false)}
+        />
+      )}
     </div>
   );
 }
